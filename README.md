@@ -6,7 +6,7 @@ A high-performance, fully-featured RESTful Web Service built with **JAX-RS (Jers
 
 ## API Overview
 
-| Base URL | `http://localhost:8080/api/v1` |
+| Base URL | `http://localhost:9090/api/v1` |
 |---|---|
 | **Format** | JSON (`application/json`) |
 | **Authentication** | None (campus-internal) |
@@ -52,7 +52,7 @@ mvn clean package -q
 java -jar target/smart-campus-api-1.0.0.jar
 ```
 
-The server starts at **http://localhost:8080/api/v1**.  
+The server starts at **http://localhost:9090/api/v1**.  
 Press **ENTER** in the terminal to shut down cleanly.
 
 ---
@@ -61,54 +61,54 @@ Press **ENTER** in the terminal to shut down cleanly.
 
 ### 1. Discovery – GET /api/v1
 ```bash
-curl -s http://localhost:8080/api/v1/ | python -m json.tool
+curl -s http://localhost:9090/api/v1/ | python -m json.tool
 ```
 
 ### 2. List all rooms – GET /api/v1/rooms
 ```bash
-curl -s http://localhost:8080/api/v1/rooms | python -m json.tool
+curl -s http://localhost:9090/api/v1/rooms | python -m json.tool
 ```
 
 ### 3. Create a new room – POST /api/v1/rooms
 ```bash
-curl -s -X POST http://localhost:8080/api/v1/rooms \
+curl -s -X POST http://localhost:9090/api/v1/rooms \
   -H "Content-Type: application/json" \
   -d '{"id":"HALL-001","name":"Innovation Hub","capacity":100}' | python -m json.tool
 ```
 
 ### 4. Register a sensor – POST /api/v1/sensors
 ```bash
-curl -s -X POST http://localhost:8080/api/v1/sensors \
+curl -s -X POST http://localhost:9090/api/v1/sensors \
   -H "Content-Type: application/json" \
   -d '{"id":"CO2-002","type":"CO2","status":"ACTIVE","currentValue":395.0,"roomId":"HALL-001"}' | python -m json.tool
 ```
 
 ### 5. Filter sensors by type – GET /api/v1/sensors?type=CO2
 ```bash
-curl -s "http://localhost:8080/api/v1/sensors?type=CO2" | python -m json.tool
+curl -s "http://localhost:9090/api/v1/sensors?type=CO2" | python -m json.tool
 ```
 
 ### 6. Post a sensor reading – POST /api/v1/sensors/{sensorId}/readings
 ```bash
-curl -s -X POST http://localhost:8080/api/v1/sensors/CO2-002/readings \
+curl -s -X POST http://localhost:9090/api/v1/sensors/CO2-002/readings \
   -H "Content-Type: application/json" \
   -d '{"value":412.5}' | python -m json.tool
 ```
 
 ### 7. Get reading history – GET /api/v1/sensors/{sensorId}/readings
 ```bash
-curl -s http://localhost:8080/api/v1/sensors/CO2-002/readings | python -m json.tool
+curl -s http://localhost:9090/api/v1/sensors/CO2-002/readings | python -m json.tool
 ```
 
 ### 8. Delete a room (conflict – has sensors)
 ```bash
-curl -s -X DELETE http://localhost:8080/api/v1/rooms/LIB-301
+curl -s -X DELETE http://localhost:9090/api/v1/rooms/LIB-301
 # Expects: 409 Conflict
 ```
 
 ### 9. Post reading to a MAINTENANCE sensor
 ```bash
-curl -s -X POST http://localhost:8080/api/v1/sensors/OCC-001/readings \
+curl -s -X POST http://localhost:9090/api/v1/sensors/OCC-001/readings \
   -H "Content-Type: application/json" \
   -d '{"value":15}' | python -m json.tool
 # Expects: 403 Forbidden
@@ -116,7 +116,7 @@ curl -s -X POST http://localhost:8080/api/v1/sensors/OCC-001/readings \
 
 ### 10. Register sensor with invalid roomId
 ```bash
-curl -s -X POST http://localhost:8080/api/v1/sensors \
+curl -s -X POST http://localhost:9090/api/v1/sensors \
   -H "Content-Type: application/json" \
   -d '{"id":"FAKE-001","type":"CO2","status":"ACTIVE","currentValue":0,"roomId":"ROOM-DOES-NOT-EXIST"}' | python -m json.tool
 # Expects: 422 Unprocessable Entity

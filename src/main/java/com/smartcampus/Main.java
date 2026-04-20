@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 public class Main {
 
     private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
-    public static final String BASE_URI = "http://0.0.0.0:8080/";
+    public static final String BASE_URI = "http://0.0.0.0:9090/api/v1/";
 
     public static HttpServer startServer() {
         final ResourceConfig rc = new ResourceConfig().packages("com.smartcampus");
@@ -28,7 +28,7 @@ public class Main {
         seedSampleData();
 
         final HttpServer server = startServer();
-        LOGGER.info("Smart Campus API started at http://localhost:8080/api/v1");
+        LOGGER.info("Smart Campus API started at http://localhost:9090/api/v1");
         LOGGER.info("Press ENTER to stop the server.");
         System.in.read();
         server.shutdownNow();
@@ -54,10 +54,11 @@ public class Main {
         Sensor s3 = new Sensor("OCC-001", "Occupancy", "MAINTENANCE", 0.0, "LAB-101");
         Sensor s4 = new Sensor("TEMP-002", "Temperature", "ACTIVE", 21.0, "LEC-201");
 
-        for (Sensor s : new Sensor[]{s1, s2, s3, s4}) {
+        for (Sensor s : new Sensor[] { s1, s2, s3, s4 }) {
             ds.getSensors().put(s.getId(), s);
             Room room = ds.getRooms().get(s.getRoomId());
-            if (room != null) room.getSensorIds().add(s.getId());
+            if (room != null)
+                room.getSensorIds().add(s.getId());
         }
     }
 }
